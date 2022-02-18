@@ -1,4 +1,6 @@
 import React from "react";
+import PassMessage from "./PassMessage.jsx";
+import SeeMessage from "./SeeMessage.jsx";
 
 import SocialInteractions from "./SocialInteractions.jsx";
 import Task from "./Task.jsx";
@@ -23,7 +25,13 @@ export default class Round extends React.Component {
 
     return (
       <div className="round">
-        <Task stage={stage} player={player} game={game} />
+        {stage.name == "seeMessage" ? (
+          <SeeMessage stage={stage} player={player} game={game} />
+        ) : stage.name == "passMessage" ? (
+          <PassMessage stage={stage} player={player} game={game} />
+        ) : (
+          <Task stage={stage} player={player} game={game} />
+        )}
         {/*game.player.length is a better check for social interaction than 'game.treatment.playerCount > 1' because of the lobby --> ignor settings*/}
         {game.players.length > 1 ? (
           <SocialInteractions game={game} stage={stage} player={player} />

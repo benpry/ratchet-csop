@@ -1,4 +1,29 @@
 import Empirica from "meteor/empirica:core";
+import { ChainCollection } from "../shared/ChainCollection";
+
+const updateMessageHistory = (chainIdx, condition, message) => {
+  // get the chain
+  const chain = ChainCollection.findOne({idx: chainIdx, condition: condition})
+  // add the message to the message history
+  chain.messageHistory.push(message)
+
+  ChainCollection.update(chain._id, {
+    $set: {
+      messageHistory: chain.messageHistory
+    }
+  });
+}
+
+const completeChain = (chainIdx, condition) => {
+    // get the chain
+    const chain = ChainCollection.findOne({idx: chainIdx, condition: condition})
+    ChainCollection.update(chain._id, {
+      $set: {
+        nCompletions: chain.nCompletions + 1,
+        busy: false
+      }
+    });
+}
 
 // //// Avatar stuff //////
 
@@ -67,34 +92,38 @@ Empirica.onStageStart((game, round, stage) => {
   const team = game.get("team");
   console.log("is it team?", team);
 
-  //initiate the score for this round (because everyone will have the same score, we can save it at the round object
-  stage.set("score", 0);
-  stage.set("chat", []); //todo: I need to check if they are in team first
-  stage.set("log", [
-    {
-      verb: "roundStarted",
-      roundId:
-        stage.name === "practice"
-          ? stage.name + " (will not count towards your score)"
-          : stage.name,
-      at: new Date(),
-    },
-  ]);
-  stage.set("intermediateSolutions", []);
+  // if this is a CSOP task, set up the task
 
-  const task = stage.get("task");
-  task.students.forEach((student) => {
-    stage.set(`student-${student}-room`, "deck");
-    stage.set(`student-${student}-dragger`, null);
-  });
+  if (stage.name === "practice" || stage.name === "test") {
+    //initiate the score for this round (because everyone will have the same score, we can save it at the round object
+    stage.set("score", 0);
+    stage.set("chat", []); //todo: I need to check if they are in team first
+    stage.set("log", [
+      {
+        verb: "roundStarted",
+        roundId:
+          stage.name === "practice"
+            ? stage.name + " (will not count towards your score)"
+            : stage.name,
+        at: new Date(),
+      },
+    ]);
+    stage.set("intermediateSolutions", []);
 
-  players.forEach((player) => {
-    player.set("satisfied", false);
-  });
+    const task = stage.get("task");
+    task.students.forEach((student) => {
+      stage.set(`student-${student}-room`, "deck");
+      stage.set(`student-${student}-dragger`, null);
+    });
 
-  //there is a case where the optimal is found, but not submitted (i.e., they ruin things)
-  stage.set("optimalFound", false); //the optimal answer wasn't found
-  stage.set("optimalSubmitted", false); //the optimal answer wasn't submitted
+    players.forEach((player) => {
+      player.set("satisfied", false);
+    });
+
+    //there is a case where the optimal is found, but not submitted (i.e., they ruin things)
+    stage.set("optimalFound", false); //the optimal answer wasn't found
+    stage.set("optimalSubmitted", false); //the optimal answer wasn't submitted
+  }
 });
 
 // onStageEnd is triggered after each stage.
@@ -102,23 +131,26 @@ Empirica.onStageStart((game, round, stage) => {
 Empirica.onStageEnd((game, round, stage) => {
   console.debug("Round ", stage.name, "game", game._id, " ended");
 
-  const currentScore = stage.get("score");
-  const optimalScore = stage.get("task").optimal;
+  if (stage.name === "practice" || stage.name === "test") {
+    const currentScore = stage.get("score");
+    const optimalScore = stage.get("task").optimal;
 
-  if (currentScore === optimalScore) {
-    if (stage.name !== "practice") {
-      game.set("nOptimalSolutions", game.get("nOptimalSolutions") + 1);
+    if (currentScore === optimalScore) {
+      if (stage.name !== "practice") {
+        game.set("nOptimalSolutions", game.get("nOptimalSolutions") + 1);
+      }
+      stage.set("optimalSubmitted", true);
+      console.log("You found the optimal");
     }
-    stage.set("optimalSubmitted", true);
-    console.log("You found the optimal");
+
+    //add the round score to the game total cumulative score (only if it is not practice)
+    if (stage.name !== "practice") {
+      const cumScore = game.get("cumulativeScore") || 0;
+      const scoreIncrement = currentScore > 0 ? Math.round(currentScore) : 0;
+      game.set("cumulativeScore", Math.round(scoreIncrement + cumScore));
+    }
   }
 
-  //add the round score to the game total cumulative score (only if it is not practice)
-  if (stage.name !== "practice") {
-    const cumScore = game.get("cumulativeScore") || 0;
-    const scoreIncrement = currentScore > 0 ? Math.round(currentScore) : 0;
-    game.set("cumulativeScore", Math.round(scoreIncrement + cumScore));
-  }
 });
 
 // onRoundEnd is triggered after each round.
@@ -152,6 +184,10 @@ Empirica.onGameEnd((game) => {
       //if we never computed their bonus
       player.set("bonus", bonus);
       player.set("cumulativeScore", game.get("cumulativeScore"));
+      if (game.get("useChain")) {
+          updateMessageHistory(player.get("chainIdx"), game.get("condition"), player.get("passedMessage"));
+          completeChain(player.get("chainIdx"), game.get("condition"));  
+      }
     }
   });
 });
