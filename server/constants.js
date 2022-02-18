@@ -3,6 +3,38 @@
 export const stepOneData = [
   {
     payoff: {
+      A: { 101: 46, 102: 55, 103: 36, 104: 23 },
+      B: { 101: 32, 102: 53, 103: 46, 104: 67 },
+      C: { 101: 29, 102: 37, 103: 40, 104: 53 },
+      D: { 101: 62, 102: 79, 103: 78, 104: 56 },
+      E: { 101: 22, 102: 46, 103: 60, 104: 36 },
+      F: { 101: 60, 102: 30, 103: 59, 104: 28 }
+    },
+    _id: "1",
+    difficulty: "Easy",
+    students: ["A", "B", "C", "D", "E", "F"],
+    rooms: [101, 102, 103, 104],
+    constraints: [
+      {
+        _id: 0,
+        type: 0,
+        pair: ["C", "F"],
+        text: "must live in the same room"
+      },
+      {
+        _id: 1,
+        type: 3,
+        pair: ["D", "E"],
+        text: "can't live in the same room or be neighbors"
+      }
+    ],
+    optimal: 343,
+    computeTime: 2.07,
+    usedIn: "step1",
+    study: "pilot2"
+  },
+  {
+    payoff: {
       A: { 101: 53, 102: 77, 103: 75, 104: 36, 105: 24 },
       B: { 101: 44, 102: 39, 103: 66, 104: 44, 105: 39 },
       C: { 101: 31, 102: 35, 103: 65, 104: 21, 105: 76 },
@@ -39,38 +71,6 @@ export const stepOneData = [
     ],
     optimal: 567,
     computeTime: 2.99,
-    usedIn: "step1",
-    study: "pilot2"
-  },
-  {
-    payoff: {
-      A: { 101: 46, 102: 55, 103: 36, 104: 23 },
-      B: { 101: 32, 102: 53, 103: 46, 104: 67 },
-      C: { 101: 29, 102: 37, 103: 40, 104: 53 },
-      D: { 101: 62, 102: 79, 103: 78, 104: 56 },
-      E: { 101: 22, 102: 46, 103: 60, 104: 36 },
-      F: { 101: 60, 102: 30, 103: 59, 104: 28 }
-    },
-    _id: "1",
-    difficulty: "Easy",
-    students: ["A", "B", "C", "D", "E", "F"],
-    rooms: [101, 102, 103, 104],
-    constraints: [
-      {
-        _id: 0,
-        type: 0,
-        pair: ["C", "F"],
-        text: "must live in the same room"
-      },
-      {
-        _id: 1,
-        type: 3,
-        pair: ["D", "E"],
-        text: "can't live in the same room or be neighbors"
-      }
-    ],
-    optimal: 343,
-    computeTime: 2.07,
     usedIn: "step1",
     study: "pilot2"
   }

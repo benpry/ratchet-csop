@@ -20,6 +20,7 @@ import MoreAboutBonus from "./intro/MoreAboutBonus.jsx";
 import UIOverview from "./intro/UIOverview.jsx";
 import GroupQuiz from "./intro/GroupQuiz.jsx";
 import IndividualQuiz from "./intro/IndividualQuiz.jsx";
+import NewPlayer from "./intro/NewPlayer.jsx"
 
 import Round from "./game/Round.jsx";
 import Thanks from "./exit/Thanks.jsx";
@@ -27,6 +28,8 @@ import Sorry from "./exit/Sorry";
 
 // Set the Consent Component you want to present players (optional).
 Empirica.consent(Consent);
+
+Empirica.newPlayer(NewPlayer);
 
 // Introduction pages to show before they play the game (optional).
 // At this point they have been assigned a treatment. You can return
