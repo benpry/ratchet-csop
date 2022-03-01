@@ -21,13 +21,13 @@ class SeeMessagePage extends React.Component {
   };
 
   render() {
-    const { player, game, chains, loading, onNext, hasNext } = this.props;
+    const { player, game, round, chains, loading, onNext, hasNext } = this.props;
 
     if (loading) {
       return <div>Loading...</div>
     } else {
-      const myChain = chains.filter(x => x.idx === player.get("chainIdx") && x.condition === game.get("condition"))[0]
-      console.log(myChain)
+
+      const myChain = chains.filter(x => x.idx === player.round.get("chainIdx") && x.taskId === round.get("taskId"))[0]
       return (
         <div className="see-message">
           Today, you will assign students to rooms and try to maximize their happiness with the rooms they were assigned.

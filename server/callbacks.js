@@ -1,9 +1,17 @@
 import Empirica from "meteor/empirica:core";
 import { ChainCollection } from "../shared/ChainCollection";
 
-const updateMessageHistory = (chainIdx, condition, message) => {
+const setBusy = (currChain) => {
+  ChainCollection.update(currChain._id, {
+    $set: {
+      busy: true
+    }
+  })
+};
+
+const updateMessageHistory = (chainIdx, taskId, message) => {
   // get the chain
-  const chain = ChainCollection.findOne({idx: chainIdx, condition: condition})
+  const chain = ChainCollection.findOne({idx: chainIdx, taskId: taskId})
   // add the message to the message history
   chain.messageHistory.push(message)
 
@@ -14,9 +22,9 @@ const updateMessageHistory = (chainIdx, condition, message) => {
   });
 }
 
-const completeChain = (chainIdx, condition) => {
+const completeChain = (chainIdx, taskId) => {
     // get the chain
-    const chain = ChainCollection.findOne({idx: chainIdx, condition: condition})
+    const chain = ChainCollection.findOne({idx: chainIdx, taskId: taskId})
     ChainCollection.update(chain._id, {
       $set: {
         nCompletions: chain.nCompletions + 1,
@@ -123,6 +131,17 @@ Empirica.onStageStart((game, round, stage) => {
     //there is a case where the optimal is found, but not submitted (i.e., they ruin things)
     stage.set("optimalFound", false); //the optimal answer wasn't found
     stage.set("optimalSubmitted", false); //the optimal answer wasn't submitted
+  } else if (stage.name === "seeMessage") {
+    // Before the see message stage, assign the player to a chain
+    game.players.forEach((player) => {
+      const taskChains = ChainCollection.find({taskId: round.get("taskId"), busy: false}, {sort: {nCompletions: 1}}).fetch();
+      const minCompletions = Math.min(...taskChains.map(x => x.nCompletions));
+      const minCompletionChains = taskChains.filter(x => x.nCompletions === minCompletions);
+      const assignedChain = minCompletionChains[Math.floor(Math.random()*minCompletionChains.length)];
+      setBusy(assignedChain);
+      player.round.set("chainPosition", assignedChain.nCompletions);
+      player.round.set("chainIdx", assignedChain.idx);
+    })
   }
 });
 
@@ -149,6 +168,12 @@ Empirica.onStageEnd((game, round, stage) => {
       const scoreIncrement = currentScore > 0 ? Math.round(currentScore) : 0;
       game.set("cumulativeScore", Math.round(scoreIncrement + cumScore));
     }
+  } else if (stage.name === "passMessage") {
+    // After the pass message stage is over, update the chain and make it no longer busy
+    game.players.forEach((player) => {
+      updateMessageHistory(player.round.get("chainIdx"), round.get("taskId"), player.round.get("passedMessage"));
+      completeChain(player.round.get("chainIdx"), round.get("taskId"));  
+    })
   }
 
 });
@@ -184,10 +209,6 @@ Empirica.onGameEnd((game) => {
       //if we never computed their bonus
       player.set("bonus", bonus);
       player.set("cumulativeScore", game.get("cumulativeScore"));
-      if (game.get("useChain")) {
-          updateMessageHistory(player.get("chainIdx"), game.get("condition"), player.get("passedMessage"));
-          completeChain(player.get("chainIdx"), game.get("condition"));  
-      }
     }
   });
 });

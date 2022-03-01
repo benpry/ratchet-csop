@@ -21,14 +21,14 @@ export default class Round extends React.Component {
   }
 
   render() {
-    const { stage, player, game } = this.props;
+    const { stage, round, player, game } = this.props;
 
     return (
       <div className="round">
         {stage.name == "seeMessage" ? (
-          <SeeMessage stage={stage} player={player} game={game} />
+          <SeeMessage stage={stage} round={round} player={player} game={game} />
         ) : stage.name == "passMessage" ? (
-          <PassMessage stage={stage} player={player} game={game} />
+          <PassMessage stage={stage} round={round} player={player} game={game} />
         ) : (
           <Task stage={stage} player={player} game={game} />
         )}

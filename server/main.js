@@ -20,11 +20,11 @@ import { Meteor } from "meteor/meteor";
 // the number of chains to use per concept
 N_CHAINS = 1;
 
-const createConditionChain = (condition) => {
+const createTaskChain = (taskId) => {
   const createChain = (chainIdx) => {
     ChainCollection.insert({
       idx: chainIdx,
-      condition: condition,
+      taskId: taskId,
       messageHistory: [],
       nCompletions: 0,
       busy: false
@@ -61,26 +61,7 @@ Empirica.gameInit((game, treatment) => {
   game.set("team", game.players.length > 1);
 
   const useChain = game.treatment.useChain;
-  const condition = parseInt(game.treatment.condition);
   game.set("useChain", useChain)
-  game.set("condition", condition)
-
-  // If there are no chains for this condition, initialize some
-  if (useChain && ChainCollection.find({condition: condition}).count() === 0 ) {
-    [...Array(N_CHAINS).keys()].forEach(createConditionChain(condition))
-  }
-
-  if (useChain) {
-    game.players.forEach((player, i) => {
-      const conditionChains = ChainCollection.find({condition: condition, busy: false}, {sort: {nCompletions: 1}}).fetch();
-      const minCompletions = Math.min(...conditionChains.map(x => x.nCompletions));
-      const minCompletionChains = conditionChains.filter(x => x.nCompletions === minCompletions);
-      const assignedChain = minCompletionChains[Math.floor(Math.random()*minCompletionChains.length)];
-      setBusy(assignedChain);
-      player.set("chainPosition", assignedChain.nCompletions)
-      player.set("chainIdx", assignedChain.idx);
-    });  
-  }
 
   //we don't know the sequence yet
   let taskSequence = game.treatment.stepOne ? stepOneData : stepTwoData;
@@ -91,35 +72,50 @@ Empirica.gameInit((game, treatment) => {
     taskSequence = customShuffle(taskSequence); //this is with keeping the first practice round fixed
   }
 
-  //we'll have 1 round, each task is one stage
-  const round = game.addRound();
-  const practiceStage = round.addStage({
+  taskSequence.forEach((task) => {
+    // If there are fewer chains than N_CHAINS for this task, create some new chains
+    if (useChain && ChainCollection.find({taskId: task._id}).count() < N_CHAINS ) {
+      [...Array(N_CHAINS).keys()].forEach(createTaskChain(task._id))
+    }
+  });
+
+  //First, a practice round
+  const practiceRound = game.addRound();
+
+  // first, a practice round using the first task in the sequence
+  const practiceStage = practiceRound.addStage({
     name: "practice",
     displayName: "Practice Round",
-    durationInSeconds: 300
-  });
-  if (useChain) {
-    round.addStage({
-      name: "seeMessage",
-      displayName: "Instructional Message",
-      durationInSeconds: 9999999999
-    });  
-  }
-  practiceStage.set("task", taskSequence[0])
-  const testStage = round.addStage({
-    name: "test",
-    displayName: "Main Round",
-    displayName: "Main",
     durationInSeconds: game.treatment.stageDuration
   });
-  if (useChain) {
-    round.addStage({
-      name: "passMessage",
-      displayName: "Write a Message",
-      durationInSeconds: 9999999999
-    });  
-  }
-  testStage.set("task", taskSequence[1])
+  practiceStage.set("task", taskSequence[0])
+
+  _.times(taskSequence.length, i => {
+    const round = game.addRound();
+    round.set("taskId", taskSequence[i]._id);
+    if (useChain) {
+      round.addStage({
+        name: "seeMessage",
+        displayName: "Instructional Message",
+        durationInSeconds: 9999999999
+      });
+    }
+
+    const taskStage = round.addStage({
+      name: i === 0 ? "practice" : i,
+      displayName: `Task ${i+1}`,
+      durationInSeconds: game.treatment.stageDuration
+    });
+    taskStage.set("task", taskSequence[i]);
+    
+    if (useChain) {
+      round.addStage({
+        name: "passMessage",
+        displayName: "Write a Message",
+        durationInSeconds: 9999999999
+      });
+    }
+  })
 });
 
 // fix the first practice task and shuffle the rest

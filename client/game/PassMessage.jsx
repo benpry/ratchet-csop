@@ -25,7 +25,7 @@ class PassMessagePage extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
     const { player } = this.props;
-    player.set("passedMessage", this.state.message);
+    player.round.set("passedMessage", this.state.message);
     player.stage.submit();
   };
 
@@ -38,14 +38,14 @@ class PassMessagePage extends React.Component {
   }
 
   render() {
-    const { game, player, chains, loading } = this.props;
+    const { game, player, round, chains, loading } = this.props;
     const { message, populated } = this.state;
 
     if (loading) {
       return <div>Loading...</div>
     } else {
 
-      const myChain = chains.filter(x => x.idx === player.get("chainIdx") && x.condition === game.get("condition"))[0]
+      const myChain = chains.filter(x => x.idx === player.round.get("chainIdx") && x.taskId === round.get("taskId"))[0]
       let receivedMessage;
       if (myChain.messageHistory.length > 0 && myChain.messageHistory[myChain.messageHistory.length - 1]) {
         receivedMessage = myChain.messageHistory[myChain.messageHistory.length - 1]
@@ -57,7 +57,11 @@ class PassMessagePage extends React.Component {
             Now, you can send a message to the next participant who tries this task to help them do as well as possible.<br/>
             Remember that you will receive a bonus based on the next player's performance. The next person will only be able to see your message, not the message you saw at the beginning of the task.<br/>
 
-            The message you received was "{receivedMessage}".
+            {receivedMessage && receivedMessage.length > 0 ? 
+              <p>The message you received was "{receivedMessage}".</p>
+            :
+              null
+            }
           </div>
           <form onSubmit={this.handleSubmit}>
             <div>
