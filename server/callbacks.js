@@ -101,8 +101,23 @@ Empirica.onStageStart((game, round, stage) => {
   console.log("is it team?", team);
 
   // if this is a CSOP task, set up the task
-
-  if (stage.name === "practice" || stage.name === "test") {
+  if (stage.name === "seeMessage") {
+    // Before the see message stage, assign the player to a chain
+    game.players.forEach((player) => {
+      const taskChains = ChainCollection.find({taskId: round.get("taskId"), busy: false}, {sort: {nCompletions: 1}}).fetch();
+      const minCompletions = Math.min(...taskChains.map(x => x.nCompletions));
+      const minCompletionChains = taskChains.filter(x => x.nCompletions === minCompletions);
+      const assignedChain = minCompletionChains[Math.floor(Math.random()*minCompletionChains.length)];
+      setBusy(assignedChain);
+      player.round.set("chainPosition", assignedChain.nCompletions);
+      player.round.set("chainIdx", assignedChain.idx);
+      if (assignedChain.messageHistory.length > 0) {
+        player.round.set("receivedMessage", assignedChain.messageHistory[assignedChain.messageHistory.length - 1])
+      } else {
+        player.round.set("receivedMessage", null)
+      }
+    })
+  } else if (stage.name === "practice" || stage.name === "test") {
     //initiate the score for this round (because everyone will have the same score, we can save it at the round object
     stage.set("score", 0);
     stage.set("chat", []); //todo: I need to check if they are in team first
@@ -131,17 +146,6 @@ Empirica.onStageStart((game, round, stage) => {
     //there is a case where the optimal is found, but not submitted (i.e., they ruin things)
     stage.set("optimalFound", false); //the optimal answer wasn't found
     stage.set("optimalSubmitted", false); //the optimal answer wasn't submitted
-  } else if (stage.name === "seeMessage") {
-    // Before the see message stage, assign the player to a chain
-    game.players.forEach((player) => {
-      const taskChains = ChainCollection.find({taskId: round.get("taskId"), busy: false}, {sort: {nCompletions: 1}}).fetch();
-      const minCompletions = Math.min(...taskChains.map(x => x.nCompletions));
-      const minCompletionChains = taskChains.filter(x => x.nCompletions === minCompletions);
-      const assignedChain = minCompletionChains[Math.floor(Math.random()*minCompletionChains.length)];
-      setBusy(assignedChain);
-      player.round.set("chainPosition", assignedChain.nCompletions);
-      player.round.set("chainIdx", assignedChain.idx);
-    })
   }
 });
 

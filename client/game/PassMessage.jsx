@@ -55,13 +55,12 @@ class PassMessagePage extends React.Component {
         <div className="pass-message">
           <div className="instruction-message">
             Now, you can send a message to the next participant who tries this task to help them do as well as possible.<br/>
-            Remember that you will receive a bonus based on the next player's performance. The next person will only be able to see your message, not the message you saw at the beginning of the task.<br/>
+            Remember that you will receive a bonus based on the next player's performance.<br/>
+            The next person will only be able to see your message, not the message you saw at the beginning of the task.<br/>
 
             {receivedMessage && receivedMessage.length > 0 ? 
-              <p>The message you received was "{receivedMessage}".</p>
-            :
-              null
-            }
+              <p>The message you received was <br/>"{receivedMessage}".</p>
+            : null }
           </div>
           <form onSubmit={this.handleSubmit}>
             <div>

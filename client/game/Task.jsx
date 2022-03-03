@@ -92,6 +92,10 @@ export default class Task extends React.Component {
     const task = stage.get("task");
     const violatedConstraints = stage.get("violatedConstraints") || [];
 
+    const myMessage = player.round.get("receivedMessage");
+    console.log("my message")
+    console.log(myMessage)
+
     return (
       <div className="task">
         <div className="left">
@@ -225,6 +229,15 @@ export default class Task extends React.Component {
               Satisfied
             </button> */}
           </div>
+
+          {myMessage ?
+            <div className="taskMessage">
+              The previous participant left you this message:<br/>
+              "{myMessage}"
+            </div>
+          :
+            null
+          }
         </div>
       </div>
     );

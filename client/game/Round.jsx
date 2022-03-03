@@ -30,7 +30,7 @@ export default class Round extends React.Component {
         ) : stage.name == "passMessage" ? (
           <PassMessage stage={stage} round={round} player={player} game={game} />
         ) : (
-          <Task stage={stage} player={player} game={game} />
+          <Task stage={stage} round={round} player={player} game={game} />
         )}
         {/*game.player.length is a better check for social interaction than 'game.treatment.playerCount > 1' because of the lobby --> ignor settings*/}
         {game.players.length > 1 ? (

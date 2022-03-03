@@ -33,14 +33,6 @@ const createTaskChain = (taskId) => {
   return createChain;
 };
 
-const setBusy = (currChain) => {
-  ChainCollection.update(currChain._id, {
-    $set: {
-      busy: true
-    }
-  })
-};
-
 // publish the chains
 Meteor.publish("chains", function publishChains() {
   return ChainCollection.find({})
@@ -102,8 +94,8 @@ Empirica.gameInit((game, treatment) => {
     }
 
     const taskStage = round.addStage({
-      name: i === 0 ? "practice" : i,
-      displayName: `Task ${i+1}`,
+      name: i === 0 ? "practice" : "test",
+      displayName: `Task ${i+2}`,
       durationInSeconds: game.treatment.stageDuration
     });
     taskStage.set("task", taskSequence[i]);
