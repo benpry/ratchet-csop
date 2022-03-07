@@ -69,6 +69,33 @@ export default class Task extends React.Component {
     //if it is only one player, and satisfied, we want to lock everything
     if (game.players.length === 1 && satisfied) {
       this.setState({ activeButton: false });
+
+      // build up final representation of game state
+      const roomInfo = {}
+      const task = stage.get("task");
+      task.rooms.forEach((room) => {
+        const roomStudents = []
+        task.students.forEach((student) => {
+          console.log(stage.get(`student-${student}-room`))
+          if (stage.get(`student-${student}-room`) === room) {
+            roomStudents.push(student);
+          }
+        });
+        roomInfo[room] = roomStudents
+      });
+      const violatedConstraints = stage.get("violatedConstraints") || [];
+      const constraints = task.constraints.map((constraint) => {
+        return {
+          _id: constraint._id,
+          failed: violatedConstraints.includes(constraint._id),
+          pair: constraint.pair,
+          text: constraint.text
+        }
+      });
+      const score = stage.get("score");
+
+      player.round.set("finalAssignment", {rooms: roomInfo, constraints: constraints, score: score, payoff: task.payoff})
+
     } else {
       //if they are group (or individual that clicked unsatisfied), we want to momentarily disable the button so they don't spam, but they can change their mind so we unlock it after 1.5 seconds
       this.setState({ activeButton: false });
@@ -93,8 +120,6 @@ export default class Task extends React.Component {
     const violatedConstraints = stage.get("violatedConstraints") || [];
 
     const myMessage = player.round.get("receivedMessage");
-    console.log("my message")
-    console.log(myMessage)
 
     return (
       <div className="task">

@@ -1,19 +1,7 @@
 import React from "react";
-import { Meteor }  from "meteor/meteor";
-import { ChainCollection } from "../../shared/ChainCollection";
-import { withTracker } from "meteor/react-meteor-data";
+import ReadOnlyTask from "./ReadOnlyTask";
 
-export default class PassMessage extends React.Component { 
-  render() {
-    return (
-      <div className="nullContainer">
-        <PassMessageContents {...this.props}/>
-      </div>
-    )
-  }
-}
-
-class PassMessagePage extends React.Component {
+export default class PassMessage extends React.Component {
 
   state = {message: "", populated: false};
 
@@ -38,59 +26,50 @@ class PassMessagePage extends React.Component {
   }
 
   render() {
-    const { game, player, round, chains, loading } = this.props;
+    const { game, player, round} = this.props;
     const { message, populated } = this.state;
 
-    if (loading) {
-      return <div>Loading...</div>
-    } else {
+    const receivedMessage = player.round.get("receivedMessage");
+    const assignment = player.round.get("finalAssignment")
 
-      const myChain = chains.filter(x => x.idx === player.round.get("chainIdx") && x.taskId === round.get("taskId"))[0]
-      let receivedMessage;
-      if (myChain.messageHistory.length > 0 && myChain.messageHistory[myChain.messageHistory.length - 1]) {
-        receivedMessage = myChain.messageHistory[myChain.messageHistory.length - 1]
-      }
+    console.log("assignment")
+    console.log(assignment)
 
-      return (
-        <div className="pass-message">
-          <div className="instruction-message">
-            Now, you can send a message to the next participant who tries this task to help them do as well as possible.<br/>
-            Remember that you will receive a bonus based on the next player's performance.<br/>
-            The next person will only be able to see your message, not the message you saw at the beginning of the task.<br/>
+    return (
+      <div className="pass-message">
+        <div className="instruction-message">
+          Now, you can send a message to the next participant who tries this task to help them do as well as possible.<br/>
+          Remember that you will receive a bonus based on the next player's performance.<br/>
+          The next person will only be able to see your message, not the message you saw at the beginning of the task.<br/>
 
-            {receivedMessage && receivedMessage.length > 0 ? 
-              <p>The message you received was <br/>"{receivedMessage}".</p>
-            : null }
-          </div>
-          <form onSubmit={this.handleSubmit}>
-            <div>
-              <textarea
-                id="message"
-                type="text"
-                dir="auto"
-                name="message"
-                value={message}
-                onChange={this.handleChange}
-              />
-            </div>
-            <button type="submit">Submit</button>
-          </form>
+          {receivedMessage && receivedMessage.length > 0 ? 
+            <p>The message you received was <br/>"{receivedMessage}".</p>
+          : null }
         </div>
-      )
-    }
+        <form onSubmit={this.handleSubmit}>
+          <div>
+            <textarea
+              id="message"
+              type="text"
+              dir="auto"
+              name="message"
+              value={message}
+              onChange={this.handleChange}
+            />
+          </div>
+          <button type="submit">Submit</button>
+        </form>
+
+        <div className="solutionReminder">
+          <h2>Here is your solution again:</h2>
+          <ReadOnlyTask 
+            rooms={assignment.rooms}
+            constraints={assignment.constraints}
+            score={assignment.score}
+            payoff={assignment.payoff}
+          />
+        </div>
+      </div>
+    )
   }
 }
-
-PassMessageContents = withTracker(rest => {
-  const loading = !Meteor.subscribe("chains").ready()
-  if (loading) {
-    return { loading }
-  }
-
-  // get the chains
-  const chains = ChainCollection.find({}).fetch()
-
-  return {
-    chains
-  }
-})(PassMessagePage);

@@ -60,16 +60,10 @@ export default class Room extends React.Component {
     const students = [];
     const task = stage.get("task");
     task.students.forEach((student) => {
-      console.log(stage.get(`student-${student}-room`))
       if (stage.get(`student-${student}-room`) === room) {
         students.push(student);
       }
     });
-    if (isDeck) {
-      console.log("students")
-      console.log(students)  
-      console.log(task.students)
-    }
     const classNameRoom = isDeck ? "deck bp3-elevation-1" : "room";
     const classNameHovered = hovered ? "bp3-elevation-3" : "";
     return (

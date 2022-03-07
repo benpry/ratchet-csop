@@ -83,6 +83,9 @@ Empirica.gameInit((game, treatment) => {
   practiceStage.set("task", taskSequence[0])
 
   _.times(taskSequence.length, i => {
+    if (i == 0) {
+      return
+    }
     const round = game.addRound();
     round.set("taskId", taskSequence[i]._id);
     if (useChain) {
@@ -94,8 +97,8 @@ Empirica.gameInit((game, treatment) => {
     }
 
     const taskStage = round.addStage({
-      name: i === 0 ? "practice" : "test",
-      displayName: `Task ${i+2}`,
+      name: "test",
+      displayName: `Task ${i+1}`,
       durationInSeconds: game.treatment.stageDuration
     });
     taskStage.set("task", taskSequence[i]);
