@@ -21,7 +21,9 @@ export default class Overview extends React.Component {
             <strong>assign a group of students into dorm rooms</strong>. You are
             asked to find the room assignment plan that maximizes overall
             satisfaction for the group while respecting certain constraints
-            (e.g., some students can not live together in one room).
+            (e.g., some students can not live together in one room). You may also read
+            a message from a previous participant and send a message to the next participant
+            who completes the task to help them succeed at it.
           </p>
 
           <p>
@@ -32,7 +34,7 @@ export default class Overview extends React.Component {
             <strong>
               If you do not have at least{" "}
               {Math.ceil((treatment.stageDuration / 60.0) * 6.0)} minutes
-              available to work on this HIT please return it now.
+              available to work on this task please return it now.
             </strong>
           </p>
 
@@ -66,7 +68,8 @@ export default class Overview extends React.Component {
               will evaluate the quality of your plan by scoring it in each task.
               At the end of the game, you will have the opportunity to earn a
               bonus payment and the amount is dependent on your accumulated
-              score in all {treatment.nRounds} tasks.{" "}
+              score in all {treatment.nRounds} tasks, as well as the scores of the
+              people who read the message you write after completing the tasks.{" "}
               <em style={{ color: "red" }}>
                 If we detect that you are inactive during a task, you will not
                 receive a bonus for that task.

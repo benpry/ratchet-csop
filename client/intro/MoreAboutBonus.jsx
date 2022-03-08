@@ -74,9 +74,9 @@ export default class MoreAboutBonus extends React.Component {
           </p>
 
           <p>
-            Therefore,
+            Therefore,{" "}
             <strong>
-              big part of the bonus is for finding the BEST possible
+              a big part of the bonus is for finding the BEST possible
               assignment{" "}
             </strong>{" "}
             (i.e., "optimal assignment bonus", which can be up to $5 total).
@@ -88,6 +88,14 @@ export default class MoreAboutBonus extends React.Component {
             compared to the easier ones (more students/rooms means more possible
             bonus).
           </p>
+
+          {treatment.useChain ?
+            <p>
+              You will also receive a bonus based on <strong>how well the people who read your messages
+              perform on the task</strong>. <strong>Their bonuses on the task will be added to your bonus on every task</strong>,
+              so you should try to help them do as well as possible.
+            </p>
+          : null}
 
           {social ? (
             <div style={{ textAlign: "center" }}>

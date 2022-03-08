@@ -16,6 +16,7 @@ import ConstraintsDetails from "./intro/ConstraintsDetails.jsx";
 import RoomArrangements from "./intro/RoomArrangements";
 import TeamDetails from "./intro/TeamDetails.jsx";
 import SocialInteractionDetails from "./intro/SocialInteractionDetails.jsx";
+import MessagePassing from "./intro/MessagePassing.jsx"
 import MoreAboutBonus from "./intro/MoreAboutBonus.jsx";
 import UIOverview from "./intro/UIOverview.jsx";
 import GroupQuiz from "./intro/GroupQuiz.jsx";
@@ -38,6 +39,9 @@ Empirica.introSteps((game, treatment) => {
   const steps = [Overview, TaskDetails, ConstraintsDetails, RoomArrangements];
   if (game.treatment.playerCount > 1) {
     steps.push(TeamDetails, SocialInteractionDetails);
+  }
+  if (game.treatment.useChain) {
+    steps.push(MessagePassing)
   }
   steps.push(MoreAboutBonus, UIOverview);
 
