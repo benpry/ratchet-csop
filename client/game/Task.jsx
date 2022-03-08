@@ -7,6 +7,107 @@ import { StageTimeWrapper } from "meteor/empirica:core";
 import { TimeSync } from "meteor/mizzao:timesync";
 import moment from "moment";
 
+function getViolations(stage, assignments) {
+  // console.debug("assignments ", assignments);
+  const task = stage.get("task");
+  const violatedConstraintsIds = [];
+
+  task.constraints.forEach((constraint) => {
+    const firstStudentRoom = find_room(assignments, constraint.pair[0]);
+    const secondStudentRoom = find_room(assignments, constraint.pair[1]);
+
+    if (firstStudentRoom !== "deck" && secondStudentRoom !== "deck") {
+      switch (constraint.type) {
+        case 0:
+          //they are not in the same room, when they should've
+          if (firstStudentRoom !== secondStudentRoom) {
+            // console.debug(
+            //   constraint.pair.join(" and "),
+            //   "they are not in the same room, when they should've"
+            // );
+            violatedConstraintsIds.push(constraint._id);
+          }
+          break;
+        case 1:
+          //they are in the same room, when they shouldn't
+          if (firstStudentRoom === secondStudentRoom) {
+            // console.debug(
+            //   constraint.pair.join(" and "),
+            //   "they are in the same room, when they shouldn't"
+            // );
+            violatedConstraintsIds.push(constraint._id);
+          }
+
+          break;
+        case 2:
+          //if they are not neighbors, when they should've been
+          if (Math.abs(firstStudentRoom - secondStudentRoom) !== 1) {
+            // console.debug(
+            //   constraint.pair.join(" and "),
+            //   "they are not neighbors, when they should've been"
+            // );
+            violatedConstraintsIds.push(constraint._id);
+          }
+
+          break;
+        case 3:
+          if (Math.abs(firstStudentRoom - secondStudentRoom) < 2) {
+            // console.debug(
+            //   constraint.pair.join(" and "),
+            //   "can't live in the same room or be neighbors, so why are they?"
+            // );
+            violatedConstraintsIds.push(constraint._id);
+          }
+          break;
+      }
+    }
+  });
+
+  return violatedConstraintsIds;
+}
+
+// helper function to get the score
+function getScore(task, assignments, nViolations) {
+  let score = 0;
+  Object.keys(assignments).forEach((room) => {
+    assignments[room].forEach((student) => {
+      score += task.payoff[student][room];
+    });
+  });
+  return score - nViolations * 100;
+}
+
+function find_room(assignments, student) {
+  return Object.keys(assignments).find((room) =>
+    assignments[room].includes(student)
+  );
+}
+
+// update the assiginment so that the information we save is up to date
+const updateAssignment = (stage) => {
+  const task = stage.get("task");
+  let assignments = { deck: [] };
+  task.rooms.forEach((room) => {
+    assignments[room] = [];
+  });
+
+  //check for constraint violations
+  const violationIds = getViolations(stage, assignments);
+  stage.set("violatedConstraints", violationIds);
+
+  //get score if there are no violations, otherwise, the score is 0
+  const currentScore =
+    assignments["deck"].length === 0
+      ? getScore(task, assignments, violationIds.length)
+      : 0;
+  //console.debug("currentScore", currentScore);
+  stage.set("score", currentScore || 0);
+
+  if (currentScore === task.optimal) {
+    stage.set("optimalFound", true);
+  }
+}
+
 const TimedButton_1 = StageTimeWrapper((props) => {
   const { player, onClick, activateAt, remainingSeconds, stage } = props;
 
@@ -70,6 +171,8 @@ export default class Task extends React.Component {
     if (game.players.length === 1 && satisfied) {
       this.setState({ activeButton: false });
 
+      // update the game state to make sure the information we save is accurate
+      updateAssignment(stage)
       // build up final representation of game state
       const roomInfo = {}
       const task = stage.get("task");

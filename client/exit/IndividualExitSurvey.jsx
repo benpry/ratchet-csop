@@ -15,7 +15,8 @@ export default class IndividualExitSurvey extends React.Component {
     strategyQ1: "",
     strategyQ2: "",
     strategyQ3: "",
-    strategyQ4: ""
+    strategyQ4: "",
+    strategyDescription: ""
   };
 
   handleChange = event => {
@@ -34,15 +35,13 @@ export default class IndividualExitSurvey extends React.Component {
         {" "}
         <h1> Exit Survey </h1>
         <br />
-        <h3>
-          Please submit the following code to receive your bonus:{" "}
-          <em>{player._id}</em>.
-        </h3>
         <p>
-          You final{" "}
+          Your personal{" "}
           <strong>
-            bonus for the part of Room Assignment Game{" "}
-            <em>is ${player.get("bonus") || 0}</em>
+            bonus for the Room Assignment Game{" "}
+            <em>is ${player.get("bonus") || 0}</em>. On top of this,{" "}
+            you will earn a bonus based on how well the people who read your
+            messages perform.
           </strong>{" "}
         </p>
       </div>
@@ -58,7 +57,8 @@ export default class IndividualExitSurvey extends React.Component {
       feedback,
       strategyQ2,
       strategyQ3,
-      strategyQ4
+      strategyQ4,
+      strategyDescription
     } = this.state;
 
     return (
@@ -161,80 +161,89 @@ export default class IndividualExitSurvey extends React.Component {
               </RadioGroup>
             </div>
           </div>
-
-          <div className="form-line thirds">
-            <div className="pt-form-group">
-              <label className="pt-label" htmlFor="age">
-                Were the instructions clear?
-              </label>
-              <div className="pt-form-content">
-                <textarea
-                  className="pt-input pt-fill"
-                  dir="auto"
-                  name="instructionsClear"
-                  value={instructionsClear}
-                  onChange={this.handleChange}
-                />
-              </div>
+          <div className="pt-form-group">
+            <label className="pt-label" htmlFor="age">
+              Were the instructions clear?
+            </label>
+            <div className="pt-form-content">
+              <textarea
+                className="pt-input pt-fill"
+                dir="auto"
+                name="instructionsClear"
+                value={instructionsClear}
+                onChange={this.handleChange}
+              />
             </div>
-            <div className="pt-form-group">
-              <label className="pt-label" htmlFor="age">
-                Was the time limit per task reasonable?
-              </label>
-              <div className="pt-form-content">
-                <textarea
-                  className="pt-input pt-fill"
-                  dir="auto"
-                  name="timeReasonable"
-                  value={timeReasonable}
-                  onChange={this.handleChange}
-                />
-              </div>
+          </div>
+          <div className="pt-form-group">
+            <label className="pt-label" htmlFor="age">
+              Did you encounter any problems with the user interface?
+            </label>
+            <div className="pt-form-content">
+              <textarea
+                className="pt-input pt-fill"
+                dir="auto"
+                name="uiProblems"
+                value={uiProblems}
+                onChange={this.handleChange}
+              />
             </div>
-            <div className="pt-form-group">
-              <label className="pt-label" htmlFor="age">
-                Did you encounter any problems with the user interface?
-              </label>
-              <div className="pt-form-content">
-                <textarea
-                  className="pt-input pt-fill"
-                  dir="auto"
-                  name="uiProblems"
-                  value={uiProblems}
-                  onChange={this.handleChange}
-                />
-              </div>
+          </div>
+          <div className="pt-form-group">
+            <label className="pt-label" htmlFor="age">
+              How would you describe the strategy you used to solve this task?
+            </label>
+            <div className="pt-form-content">
+              <textarea
+                className="pt-input pt-fill"
+                dir="auto"
+                name="strategyDescription"
+                value={strategyDescription}
+                onChange={this.handleChange}
+              />
             </div>
           </div>
 
-          <div className="form-line thirds">
-            <div className="pt-form-group">
-              <label className="pt-label" htmlFor="age">
-                Do you feel the pay was fair?
-              </label>
-              <div className="pt-form-content">
-                <textarea
-                  className="pt-input pt-fill"
-                  dir="auto"
-                  name="fair"
-                  value={fair}
-                  onChange={this.handleChange}
-                />
-              </div>
+          <div className="pt-form-group">
+            <label className="pt-label" htmlFor="age">
+              Was the time limit per task reasonable?
+            </label>
+            <div className="pt-form-content">
+              <textarea
+                className="pt-input pt-fill"
+                dir="auto"
+                name="timeReasonable"
+                value={timeReasonable}
+                onChange={this.handleChange}
+              />
             </div>
-            <div className="pt-form-group">
-              <label className="pt-label" htmlFor="age">
-                Feedback, including problems you encountered.
-              </label>
-              <div className="pt-form-content">
-                <textarea
-                  className="pt-input pt-fill"
-                  dir="auto"
-                  name="feedback"
-                  value={feedback}
-                  onChange={this.handleChange}
-                />
-              </div>
+          </div>
+          <div className="pt-form-group">
+            <label className="pt-label" htmlFor="age">
+              Do you feel the pay was fair?
+            </label>
+            <div className="pt-form-content">
+              <textarea
+                className="pt-input pt-fill"
+                dir="auto"
+                name="fair"
+                value={fair}
+                onChange={this.handleChange}
+              />
+            </div>
+          </div>
+          <div className="pt-form-group">
+            <label className="pt-label" htmlFor="age">
+              Feedback, including problems you encountered.
+            </label>
+            <div className="pt-form-content">
+              <textarea
+                className="pt-input pt-fill"
+                dir="auto"
+                name="feedback"
+                value={feedback}
+                onChange={this.handleChange}
+              />
             </div>
           </div>
 

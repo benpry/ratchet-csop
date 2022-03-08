@@ -32,9 +32,6 @@ export default class PassMessage extends React.Component {
     const receivedMessage = player.round.get("receivedMessage");
     const assignment = player.round.get("finalAssignment")
 
-    console.log("assignment")
-    console.log(assignment)
-
     return (
       <div className="pass-message">
         <div className="instruction-message">

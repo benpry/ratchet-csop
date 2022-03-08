@@ -42,8 +42,8 @@ export default class ExitSurvey extends React.Component {
             <strong>{player._id}</strong>.
           </p>
           <p>
-            You final <strong>bonus</strong> is in addition of the{" "}
-            <strong>1 base reward</strong> for completing the HIT.
+            You final <strong>bonus</strong> is in addition to the{" "}
+            base reward for completing the task.
           </p>
           <br />
           <p>
@@ -118,7 +118,7 @@ export default class ExitSurvey extends React.Component {
               </div>
             </div>
 
-            <div className="form-line thirds">
+            <div className="form-line">
               <div>
                 <label htmlFor="strength">
                   How would you describe your strength in the game?

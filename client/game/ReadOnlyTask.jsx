@@ -93,7 +93,7 @@ export default class ReadOnlyTask extends React.Component {
                 </tr>
               </thead>
               <tbody>
-                {Object.keys(students).map((student) => (
+                {Object.keys(students).sort().map((student) => (
                   <tr key={student}>
                     <th>Student {student}</th>
                     {Object.keys(rooms).map((room) => (
@@ -113,13 +113,13 @@ export default class ReadOnlyTask extends React.Component {
               </tbody>
             </HTMLTable>
           </div>
-
         </div>
         <div className="board">
           <div className="all-rooms">
             <div className="rooms">
               {Object.keys(rooms).map(room => (
                 <ReadOnlyRoom
+                  key={room}
                   room={room}
                   students={rooms[room]}
                 />
