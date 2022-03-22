@@ -91,6 +91,12 @@ const updateAssignment = (stage) => {
     assignments[room] = [];
   });
 
+  //find the rooms for each player
+  task.students.forEach((student) => {
+    const room = stage.get(`student-${student}-room`);
+    assignments[room].push(student);
+  });   
+
   //check for constraint violations
   const violationIds = getViolations(stage, assignments);
   stage.set("violatedConstraints", violationIds);
