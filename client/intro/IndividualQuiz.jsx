@@ -50,7 +50,7 @@ export default class IndividualQuiz extends React.Component {
     ) {
       AlertToaster.show({
         message:
-          "Sorry, you have one or more mistakes. Please ensure that you answer the questions correctly, or go back to the insturctions"
+          "Sorry, you have one or more mistakes. Please ensure that you answer the questions correctly, or go back to the instructions."
       });
     } else {
       this.props.onNext();
