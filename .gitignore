@@ -1,6 +1,6 @@
 node_modules/
 packages/
-settings.json
+# settings.json
 production.json
 prod.json
 staging.json

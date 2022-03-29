@@ -25,9 +25,9 @@ export default class UIOverview extends React.Component {
           </div>
 
           <p>
-            If the "Satisfied" button for in is unclickable (i.e., inactive) for
+            If the "Satisfied" button is unclickable (i.e., inactive) for
             more than 10 seconds, try to refresh the page. Otherwise, you will
-            have wait for the time run out. This will not effect your bonus.
+            have to wait for the time run out. This will not effect your bonus.
           </p>
 
           <p>

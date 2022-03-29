@@ -328,13 +328,6 @@ export default class Task extends React.Component {
           </div>
 
           <div className="response">
-            <TimedButton_1
-              stage={stage}
-              player={player}
-              activateAt={game.treatment.stageDuration - 5}
-              onClick={this.handleSatisfaction.bind(this, false)}
-            />
-
             <TimedButton_2
               stage={stage}
               player={player}
