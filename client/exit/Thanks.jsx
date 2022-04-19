@@ -17,7 +17,7 @@ export default class Thanks extends React.Component {
             <h4 className="pt-non-ideal-state-title">Finished!</h4>
             <hr />
             <h4 className="pt-non-ideal-state-title">
-              Submission code: {player._id}
+              Submission code: 194C4CF9
             </h4>
             <h4 className="pt-non-ideal-state-title">
               Bonus: ${player.get("bonus")}

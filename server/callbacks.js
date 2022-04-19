@@ -109,6 +109,7 @@ Empirica.onStageStart((game, round, stage) => {
       const minCompletionChains = taskChains.filter(x => x.nCompletions === minCompletions);
       const assignedChain = minCompletionChains[Math.floor(Math.random()*minCompletionChains.length)];
       setBusy(assignedChain);
+      player.round.set("taskId", round.get("taskId"))
       player.round.set("chainPosition", assignedChain.nCompletions);
       player.round.set("chainIdx", assignedChain.idx);
       if (assignedChain.messageHistory.length > 0) {
@@ -184,7 +185,22 @@ Empirica.onStageEnd((game, round, stage) => {
 
 // onRoundEnd is triggered after each round.
 // It receives the same options as onGameEnd, and the round that just ended.
-Empirica.onRoundEnd((game, round) => {});
+Empirica.onRoundEnd((game, round) => {
+  const conversionRate = game.treatment.conversionRate
+  const optimalSolutionBonus = game.treatment.optimalSolutionBonus
+  
+  game.players.forEach((player) => {
+    const assignment = player.round.get("finalAssignment")
+    const score = parseInt(assignment.score)
+
+    const bonus = score > 0 ?
+      (score * conversionRate +
+      (+ (score === assignment.optimal)) * optimalSolutionBonus).toFixed(2)
+    : 0;
+    
+    player.round.set("roundBonus", bonus)
+  })
+});
 
 // onRoundEnd is triggered when the game ends.
 // It receives the same options as onGameStart.
