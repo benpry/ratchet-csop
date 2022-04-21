@@ -2,6 +2,8 @@ import React from "react";
 
 import {Centered} from "meteor/empirica:core";
 
+const SUBMISSION_CODE = "194C4CF9";
+
 export default class Thanks extends React.Component {
   static stepName = "Thanks";
   
@@ -17,7 +19,7 @@ export default class Thanks extends React.Component {
             <h4 className="pt-non-ideal-state-title">Finished!</h4>
             <hr />
             <h4 className="pt-non-ideal-state-title">
-              Submission code: 194C4CF9
+              Submission code: {SUBMISSION_CODE}
             </h4>
             <h4 className="pt-non-ideal-state-title">
               Bonus: ${player.get("bonus")}
