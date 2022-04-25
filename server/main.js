@@ -17,9 +17,6 @@ import { Meteor } from "meteor/meteor";
 // rounds and stages (with get/set methods), that will be able to use later in
 // the game.
 
-// the number of chains to use per concept
-N_CHAINS = 1;
-
 const createTaskChain = (taskId) => {
   const createChain = (chainIdx) => {
     ChainCollection.insert({
@@ -64,10 +61,12 @@ Empirica.gameInit((game, treatment) => {
     taskSequence = customShuffle(taskSequence); //this is with keeping the first practice round fixed
   }
 
+  const nChains = game.treatment.nChains
+
   taskSequence.forEach((task) => {
-    // If there are fewer chains than N_CHAINS for this task, create some new chains
-    if (useChain && ChainCollection.find({taskId: task._id}).count() < N_CHAINS ) {
-      [...Array(N_CHAINS).keys()].forEach(createTaskChain(task._id))
+    // If there are fewer chains than nChains for this task, create some new chains
+    if (useChain && ChainCollection.find({taskId: task._id}).count() < nChains ) {
+      [...Array(nChains).keys()].forEach(createTaskChain(task._id))
     }
   });
 
