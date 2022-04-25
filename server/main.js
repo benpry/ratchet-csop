@@ -2,7 +2,7 @@ import Empirica from "meteor/empirica:core";
 
 import "./callbacks.js";
 import "./bots.js";
-import { stepOneData, stepTwoData } from "./constants";
+import { tasks } from "./constants";
 
 // imports for dealing with chains
 import { ChainCollection } from "../shared/ChainCollection";
@@ -56,7 +56,7 @@ Empirica.gameInit((game, treatment) => {
   game.set("useChain", useChain)
 
   //we don't know the sequence yet
-  let taskSequence = game.treatment.stepOne ? stepOneData : stepTwoData;
+  let taskSequence = tasks;
 
   if (game.treatment.shuffleTaskOrder) {
     //TODO: I need to make sure that I keep the first task fixed (if it has training)
