@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "start": "meteor run",
-    "deploy": "MONGO_URL=mongodb+srv://ben:5HJx7oczCrTp5ICs@culturalratchet.ctx4b.mongodb.net/CSOP meteor run --port 2998 --settings deployment.json"
+    "deploy": "MONGO_URL=mongodb+srv://ben:rXk1Cee76gRzATJY@culturalratchet.ctx4b.mongodb.net/CSOP meteor run --port 2998 --settings deployment.json"
   },
   "dependencies": {
     "@babel/runtime": "^7.17.8",
