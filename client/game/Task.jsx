@@ -165,7 +165,7 @@ export default class Task extends React.Component {
   }
 
   handleSatisfaction = (satisfied, event) => {
-    const { game, player, stage } = this.props;
+    const { game, player, stage, remainingSeconds } = this.props;
     event.preventDefault();
 
     //if everyone submitted then, there is nothing to handle
@@ -204,6 +204,7 @@ export default class Task extends React.Component {
       const score = stage.get("score");
 
       player.round.set("finalAssignment", {rooms: roomInfo, constraints: constraints, score: score, payoff: task.payoff, optimal: task.optimal})
+      player.round.set("remainingSeconds", remainingSeconds)
 
     } else {
       //if they are group (or individual that clicked unsatisfied), we want to momentarily disable the button so they don't spam, but they can change their mind so we unlock it after 1.5 seconds

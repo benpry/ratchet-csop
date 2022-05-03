@@ -51,7 +51,7 @@ export default class MoreAboutBonus extends React.Component {
           ) : null}
 
           <p>
-            There are two parts of the bonus that you will have opportunity to
+            There are three parts of the bonus that you will have opportunity to
             earn in each task:
           </p>
 
@@ -74,19 +74,29 @@ export default class MoreAboutBonus extends React.Component {
           </p>
 
           <p>
+            3. <strong>"time bonus"</strong>: You will receive a small additional
+            bonus based on how quickly you complete the task. For each minute remaining
+            on the clock when you submit a task, you get{" "}
+            <strong style={{color: "red"}}>
+              a bonus of ${treatment.timeConversionRate}
+            </strong>.
+          </p>
+
+          {treatment.useChain ?
+            <p>
+              Time spent reading or writing messages does <strong>not</strong> count against the speed bonus,
+              so feel free to spend as long as you like on these stages. 
+            </p>
+          : null }
+
+          <p>
             Therefore,{" "}
             <strong>
               a big part of the bonus is for finding the BEST possible
               assignment{" "}
             </strong>{" "}
-            (i.e., "optimal assignment bonus", which can be up to $5 total).
-            Also,
-            <strong>
-              you can earn more game points (i.e., more performance-based
-              bonuses) from the difficult tasks{" "}
-            </strong>{" "}
-            compared to the easier ones (more students/rooms means more possible
-            bonus).
+            (i.e., "optimal assignment bonus", which can be up to $3 total).
+            You also get a bigger bonus the faster you complete the task.
           </p>
 
           {treatment.useChain ?

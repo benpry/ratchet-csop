@@ -173,6 +173,11 @@ Empirica.onStageEnd((game, round, stage) => {
       const scoreIncrement = currentScore > 0 ? Math.round(currentScore) : 0;
       game.set("cumulativeScore", Math.round(scoreIncrement + cumScore));
     }
+
+    game.players.forEach(p => {
+      p.round.set("timeRemaining", p.stage.get("submittedAt"))
+    })
+
   } else if (stage.name === "passMessage") {
     // After the pass message stage is over, update the chain and make it no longer busy
     game.players.forEach((player) => {
@@ -188,14 +193,16 @@ Empirica.onStageEnd((game, round, stage) => {
 Empirica.onRoundEnd((game, round) => {
   const conversionRate = game.treatment.conversionRate
   const optimalSolutionBonus = game.treatment.optimalSolutionBonus
+  const timeConversionRate = game.treatment.timeConversionRate
   
   game.players.forEach((player) => {
     const assignment = player.round.get("finalAssignment")
+    const remainingSeconds = player.round.get("remainingSeconds")
     const score = parseInt(assignment.score)
 
     const bonus = score > 0 ?
       (score * conversionRate +
-      (+ (score === assignment.optimal)) * optimalSolutionBonus).toFixed(2)
+      (+ (score === assignment.optimal)) * optimalSolutionBonus + ((remainingSeconds / 60) * timeConversionRate)).toFixed(2)
     : 0;
     
     player.round.set("roundBonus", bonus)
