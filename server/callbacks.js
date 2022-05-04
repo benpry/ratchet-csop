@@ -174,8 +174,39 @@ Empirica.onStageEnd((game, round, stage) => {
       game.set("cumulativeScore", Math.round(scoreIncrement + cumScore));
     }
 
-    game.players.forEach(p => {
-      p.round.set("timeRemaining", p.stage.get("submittedAt"))
+    game.players.forEach(player => {
+      player.round.set("timeRemaining", player.stage.get("submittedAt"))
+
+      if (player.get("finalAssignment") == undefined) {
+        // update the game state to make sure the information we save is accurate
+        updateAssignment(stage)
+        // build up final representation of game state
+        const roomInfo = {}
+        const task = stage.get("task");
+        task.rooms.forEach((room) => {
+          const roomStudents = []
+          task.students.forEach((student) => {
+            console.log(stage.get(`student-${student}-room`))
+            if (stage.get(`student-${student}-room`) === room) {
+              roomStudents.push(student);
+            }
+          });
+          roomInfo[room] = roomStudents
+        });
+        const violatedConstraints = stage.get("violatedConstraints") || [];
+        const constraints = task.constraints.map((constraint) => {
+          return {
+            _id: constraint._id,
+            failed: violatedConstraints.includes(constraint._id),
+            pair: constraint.pair,
+            text: constraint.text
+          }
+        });
+        const score = stage.get("score");
+
+        player.round.set("finalAssignment", {rooms: roomInfo, constraints: constraints, score: score, payoff: task.payoff, optimal: task.optimal})
+        player.round.set("remainingSeconds", 0)
+      }
     })
 
   } else if (stage.name === "passMessage") {
@@ -411,6 +442,36 @@ function getViolations(stage, assignments) {
   });
 
   return violatedConstraintsIds;
+}
+
+const updateAssignment = (stage) => {
+  const task = stage.get("task");
+  let assignments = { deck: [] };
+  task.rooms.forEach((room) => {
+    assignments[room] = [];
+  });
+
+  //find the rooms for each player
+  task.students.forEach((student) => {
+    const room = stage.get(`student-${student}-room`);
+    assignments[room].push(student);
+  });   
+
+  //check for constraint violations
+  const violationIds = getViolations(stage, assignments);
+  stage.set("violatedConstraints", violationIds);
+
+  //get score if there are no violations, otherwise, the score is 0
+  const currentScore =
+    assignments["deck"].length === 0
+      ? getScore(task, assignments, violationIds.length)
+      : 0;
+  //console.debug("currentScore", currentScore);
+  stage.set("score", currentScore || 0);
+
+  if (currentScore === task.optimal) {
+    stage.set("optimalFound", true);
+  }
 }
 
 // // onSet is called when the experiment code call the `.append()` method

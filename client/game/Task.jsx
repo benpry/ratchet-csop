@@ -157,7 +157,7 @@ export default class Task extends React.Component {
   }
 
   componentDidMount() {
-    const { player } = this.props;
+    const { player, remainingSeconds } = this.props;
     setTimeout(() => this.setState({ activeButton: true }), 5000); //we make the satisfied button active after 5 seconds
     if (player.stage.submitted) {
       this.setState({ activeButton: false });

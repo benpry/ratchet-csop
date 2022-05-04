@@ -66,7 +66,7 @@ Empirica.gameInit((game, treatment) => {
   taskSequence.forEach((task) => {
     // If there are fewer chains than nChains for this task, create some new chains
     if (useChain && ChainCollection.find({taskId: task._id}).count() < nChains ) {
-      [...Array(nChains).keys()].forEach(createTaskChain(task._id))
+      [...Array(nChains).keys()].forEach(createTaskChain(task._id))  // fix this
     }
   });
 
