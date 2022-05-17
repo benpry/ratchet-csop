@@ -2,6 +2,48 @@
 
 export const tasks = [
   {
+    payoff: {
+      A: { 101: 53, 102: 77, 103: 75, 104: 36, 105: 24, 106: 41 },
+      B: { 101: 44, 102: 39, 103: 66, 104: 44, 105: 39, 106: 27 },
+      C: { 101: 31, 102: 35, 103: 65, 104: 21, 105: 76, 106: 58 },
+      D: { 101: 48, 102: 66, 103: 30, 104: 37, 105: 80, 106: 59 },
+      E: { 101: 66, 102: 78, 103: 27, 104: 74, 105: 48, 106: 57 },
+      F: { 101: 82, 102: 31, 103: 67, 104: 76, 105: 37, 106: 53 },
+      G: { 101: 56, 102: 25, 103: 37, 104: 47, 105: 24, 106: 45 },
+      H: { 101: 73, 102: 55, 103: 42, 104: 69, 105: 34, 106: 35 }
+    },
+    _id: "0",
+    difficulty: "Training - Medium",
+    students: ["A", "B", "C", "D", "E", "F", "G", "H"],
+    rooms: [101, 102, 103, 104, 105, 106],
+    constraints: [
+      {
+        _id: 0,
+        type: 1,
+        pair: ["C", "D"],
+        text: "can't live in the same room"
+      },
+      { _id: 1, type: 2, pair: ["D", "E"], text: "must be neighbors" },
+      {
+        _id: 2,
+        type: 3,
+        pair: ["E", "H"],
+        text: "can't live in the same room or be neighbors"
+      },
+      {
+        _id: 3,
+        type: 1,
+        pair: ["F", "H"],
+        text: "can't live in the same room"
+      },
+      { _id: 1, type: 2, pair: ["A", "F"], text: "must be neighbours" }
+    ],
+    optimal: 567,
+    computeTime: 2.99,
+    usedIn: "step1",
+    study: "chainExperiment"
+  },
+  {
     "payoff": {
       "A": {
         "101": 34,
