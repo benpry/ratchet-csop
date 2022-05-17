@@ -177,9 +177,10 @@ Empirica.onStageEnd((game, round, stage) => {
     game.players.forEach(player => {
       player.round.set("timeRemaining", player.stage.get("submittedAt"))
 
-      if (player.get("finalAssignment") == undefined) {
+      if (!player.get("satisfied")) {
+        console.log("player timed out")
         // update the game state to make sure the information we save is accurate
-        updateAssignment(stage)
+        updateAssignment(stage);
         // build up final representation of game state
         const roomInfo = {}
         const task = stage.get("task");

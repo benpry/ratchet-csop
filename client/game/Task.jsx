@@ -153,11 +153,12 @@ const TimedButton_2 = StageTimeWrapper((props) => {
 export default class Task extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { activeButton: false };
+    this.state = { activeButton: false, startTime: undefined };
   }
 
   componentDidMount() {
-    const { player, remainingSeconds } = this.props;
+    const { player } = this.props;
+    this.setState({startTime: new Date()})
     setTimeout(() => this.setState({ activeButton: true }), 5000); //we make the satisfied button active after 5 seconds
     if (player.stage.submitted) {
       this.setState({ activeButton: false });
@@ -202,9 +203,8 @@ export default class Task extends React.Component {
         }
       });
       const score = stage.get("score");
-
       player.round.set("finalAssignment", {rooms: roomInfo, constraints: constraints, score: score, payoff: task.payoff, optimal: task.optimal})
-      player.round.set("remainingSeconds", remainingSeconds)
+      player.round.set("remainingSeconds", 300 - ((new Date() - this.state.startTime) / 1000))
 
     } else {
       //if they are group (or individual that clicked unsatisfied), we want to momentarily disable the button so they don't spam, but they can change their mind so we unlock it after 1.5 seconds
