@@ -204,7 +204,7 @@ export default class Task extends React.Component {
       });
       const score = stage.get("score");
       player.round.set("finalAssignment", {rooms: roomInfo, constraints: constraints, score: score, payoff: task.payoff, optimal: task.optimal})
-      player.round.set("remainingSeconds", 300 - ((new Date() - this.state.startTime) / 1000))
+      player.round.set("remainingSeconds", game.treatment.stageDuration - ((new Date() - this.state.startTime) / 1000))
 
     } else {
       //if they are group (or individual that clicked unsatisfied), we want to momentarily disable the button so they don't spam, but they can change their mind so we unlock it after 1.5 seconds
