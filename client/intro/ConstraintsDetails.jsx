@@ -157,20 +157,20 @@ export default class ConstraintsDetails extends React.Component {
           case 0:
             //they are not in the same room, when they should've
             if (firstStudentRoom !== secondStudentRoom) {
-              console.debug(
-                constraint.pair.join(" and "),
-                "they are not in the same room, when they should've"
-              );
+              // console.debug(
+              //  constraint.pair.join(" and "),
+              //  "they are not in the same room, when they should've"
+              //);
               this.state.violatedConstraintsIds.push(constraint._id);
             }
             break;
           case 1:
             //they are in the same room, when they shouldn't
             if (firstStudentRoom === secondStudentRoom) {
-              console.debug(
-                constraint.pair.join(" and "),
-                "they are in the same room, when they shouldn't"
-              );
+              //console.debug(
+              //  constraint.pair.join(" and "),
+              //  "they are in the same room, when they shouldn't"
+              //);
               this.state.violatedConstraintsIds.push(constraint._id);
             }
 
@@ -178,20 +178,20 @@ export default class ConstraintsDetails extends React.Component {
           case 2:
             //if they are not neighbors, when they should've been
             if (Math.abs(firstStudentRoom - secondStudentRoom) !== 1) {
-              console.debug(
-                constraint.pair.join(" and "),
-                "they are not neighbors, when they should've been"
-              );
+              //console.debug(
+              //  constraint.pair.join(" and "),
+              //  "they are not neighbors, when they should've been"
+              //);
               this.state.violatedConstraintsIds.push(constraint._id);
             }
 
             break;
           case 3:
             if (Math.abs(firstStudentRoom - secondStudentRoom) < 2) {
-              console.debug(
-                constraint.pair.join(" and "),
-                "can't live in the same room or be neighbors, so why are they?"
-              );
+              //console.debug(
+              //  constraint.pair.join(" and "),
+              //  "can't live in the same room or be neighbors, so why are they?"
+              //);
               this.state.violatedConstraintsIds.push(constraint._id);
             }
             break;

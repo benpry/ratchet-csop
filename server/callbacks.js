@@ -40,7 +40,7 @@ const completeChain = (chainIdx, taskId) => {
 // the game.
 Empirica.onGameStart((game) => {
   const players = game.players;
-  console.debug("game ", game._id, " started");
+  // console.debug("game ", game._id, " started");
 
   const names = [
     "Blue",
@@ -96,7 +96,7 @@ Empirica.onRoundStart((game, round) => {});
 // It receives the same options as onRoundStart, and the stage that is starting.
 Empirica.onStageStart((game, round, stage) => {
   const players = game.players;
-  console.debug("Round ", stage.name, "game", game._id, " started");
+  // console.debug("Round ", stage.name, "game", game._id, " started");
   const team = game.get("team");
   // console.log("is it team?", team);
 
@@ -153,7 +153,7 @@ Empirica.onStageStart((game, round, stage) => {
 // onStageEnd is triggered after each stage.
 // It receives the same options as onRoundEnd, and the stage that just ended.
 Empirica.onStageEnd((game, round, stage) => {
-  console.debug("Round ", stage.name, "game", game._id, " ended");
+  // console.debug("Round ", stage.name, "game", game._id, " ended");
 
   if (stage.name === "practice" || stage.name === "test") {
     const currentScore = stage.get("score");
@@ -245,7 +245,7 @@ Empirica.onRoundEnd((game, round) => {
 // It receives the same options as onGameStart.
 Empirica.onGameEnd((game) => {
   const players = game.players;
-  console.debug("The game", game._id, "has ended");
+  // console.debug("The game", game._id, "has ended");
   //computing the bonus for everyone (in this game, everyone will get the same value)
   const conversionRate = game.treatment.conversionRate
     ? game.treatment.conversionRate
