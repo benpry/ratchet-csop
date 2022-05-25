@@ -21,8 +21,8 @@ export default class MessagePassing extends React.Component {
           <p>
             After completing the task, you will be prompted to write a message to the next player who attempts the task.
             Your goal is to help them do as well on the task as possible. <strong>The next participant's bonus will be added to your bonus</strong>,
-            so make sure you send a good message! There is no limit to the length of your message, but the next participant will only
-            be able to see your message, not the message that the previous participant left for you.  
+            so make sure you send a good message! <strong>You can write anything you want</strong> and there is no limit to the length of your message. 
+            The next participant will only be able to see your message, not the message that the previous participant left for you.  
           </p>
 
           <button

@@ -1,8 +1,1 @@
-{
-  "admins": [
-    {
-      "username": "admin",
-      "password": "psychinohio"
-    } 
-  ]
-}
+{"admins":[{"username": "admin","password": "psychinohio"}]}
