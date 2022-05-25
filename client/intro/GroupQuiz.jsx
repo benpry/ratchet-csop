@@ -38,8 +38,8 @@ export default class GroupQuiz extends React.Component {
 
   handleRadioChange = (event) => {
     const el = event.currentTarget;
-    console.log("el", el);
-    console.log("ev", event);
+    // console.log("el", el);
+    // console.log("ev", event);
     this.setState({ [el.name]: el.value });
   };
 

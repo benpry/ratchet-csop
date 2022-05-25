@@ -186,7 +186,7 @@ export default class Task extends React.Component {
       task.rooms.forEach((room) => {
         const roomStudents = []
         task.students.forEach((student) => {
-          console.log(stage.get(`student-${student}-room`))
+          // console.log(stage.get(`student-${student}-room`))
           if (stage.get(`student-${student}-room`) === room) {
             roomStudents.push(student);
           }
@@ -220,7 +220,7 @@ export default class Task extends React.Component {
       // at: new Date()
       at: moment(TimeSync.serverTime(null, 1000)),
     });
-    console.log("task moment", moment(TimeSync.serverTime(null, 1000)));
+    // console.log("task moment", moment(TimeSync.serverTime(null, 1000)));
   };
 
   render() {

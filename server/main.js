@@ -36,12 +36,12 @@ Meteor.publish("chains", function publishChains() {
 })
 
 Empirica.gameInit((game, treatment) => {
-  console.log(
-    "Game with a treatment: ",
-    treatment,
-    " will start, with workers",
-    _.pluck(game.players, "id")
-  );
+  // console.log(
+  //  "Game with a treatment: ",
+  //  treatment,
+  //  " will start, with workers",
+  //  _.pluck(game.players, "id")
+  //);
 
   //initiate the cumulative score for this game (because everyone will have the same score, we can save it at the game object
   game.set("cumulativeScore", 0); // the total score at the end of the game

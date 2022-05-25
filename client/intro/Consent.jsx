@@ -5,7 +5,7 @@ import BrowserDetection from "react-browser-detection";
 
 export default class Consent extends React.Component {
   static renderConsent() {
-    console.log("this is not firefox");
+    // console.log("this is not firefox");
     return (
       <Centered>
         <div className="consent bp3-ui-text">
@@ -26,7 +26,7 @@ export default class Consent extends React.Component {
   }
 
   renderNoFirefox = () => {
-    console.log("this is fire fox");
+    // console.log("this is fire fox");
     return (
       <div className="consent">
         <h1 className="bp3-heading" style={{ textAlign: "center", color: "red" }}>

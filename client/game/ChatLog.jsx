@@ -11,7 +11,7 @@ export default class ChatLog extends React.Component {
 
   handleChange = (e) => {
     const el = e.currentTarget;
-    console.log('el', el.value)
+    // console.log('el', el.value)
     this.setState({ [el.name]: el.value });
   };
 
@@ -47,8 +47,8 @@ export default class ChatLog extends React.Component {
     const { comment } = this.state;
     const { messages, player } = this.props;
 
-    console.log('message', messages);
-    console.log('comment', comment)
+    // console.log('message', messages);
+    // console.log('comment', comment)
     return (
       <div className="chat bp3-card">
         <Messages messages={messages} player={player} />

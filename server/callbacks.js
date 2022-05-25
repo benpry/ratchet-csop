@@ -98,7 +98,7 @@ Empirica.onStageStart((game, round, stage) => {
   const players = game.players;
   console.debug("Round ", stage.name, "game", game._id, " started");
   const team = game.get("team");
-  console.log("is it team?", team);
+  // console.log("is it team?", team);
 
   // if this is a CSOP task, set up the task
   if (stage.name === "seeMessage") {
@@ -164,7 +164,7 @@ Empirica.onStageEnd((game, round, stage) => {
         game.set("nOptimalSolutions", game.get("nOptimalSolutions") + 1);
       }
       stage.set("optimalSubmitted", true);
-      console.log("You found the optimal");
+      // console.log("You found the optimal");
     }
 
     //add the round score to the game total cumulative score (only if it is not practice)
@@ -178,7 +178,7 @@ Empirica.onStageEnd((game, round, stage) => {
       player.round.set("timeRemaining", player.stage.get("submittedAt"))
 
       if (!player.get("satisfied")) {
-        console.log("player timed out")
+        // console.log("player timed out")
         // update the game state to make sure the information we save is accurate
         updateAssignment(stage);
         // build up final representation of game state
@@ -187,7 +187,7 @@ Empirica.onStageEnd((game, round, stage) => {
         task.rooms.forEach((room) => {
           const roomStudents = []
           task.students.forEach((student) => {
-            console.log(stage.get(`student-${student}-room`))
+            // console.log(stage.get(`student-${student}-room`))
             if (stage.get(`student-${student}-room`) === room) {
               roomStudents.push(student);
             }
@@ -307,7 +307,7 @@ Empirica.onSet(
   ) => {
     const players = game.players;
     //someone changed their satisfaction status
-    console.log("key", key);
+    // console.log("key", key);
     if (key === "satisfied") {
       //check if everyone is satisfied and if so, submit their answer
       let allSatisfied = true;

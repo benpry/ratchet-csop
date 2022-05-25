@@ -6,11 +6,11 @@ import { TimeSync } from "meteor/mizzao:timesync";
 export default class EventLog extends React.Component {
   componentDidMount() {
     this.eventsEl.scrollTop = this.eventsEl.scrollHeight;
-    console.log("time", moment(TimeSync.serverTime(new Date(), 1000)));
+    // console.log("time", moment(TimeSync.serverTime(new Date(), 1000)));
   }
 
   componentDidUpdate(prevProps) {
-    console.log(moment(TimeSync.serverTime(null, 1000)).format('HH:mm:ss'));
+    // console.log(moment(TimeSync.serverTime(null, 1000)).format('HH:mm:ss'));
     if (prevProps.events.length < this.props.events.length) {
       this.eventsEl.scrollTop = this.eventsEl.scrollHeight;
     }

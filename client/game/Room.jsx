@@ -9,7 +9,7 @@ export default class Room extends React.Component {
   state = { hovered: false };
 
   handleDragOver = (e) => {
-    console.log('timeSync',moment(TimeSync.serverTime(null, 1000)))
+    // console.log('timeSync',moment(TimeSync.serverTime(null, 1000)))
     e.preventDefault();
     e.dataTransfer.dropEffect = "move";
     this.setState({ hovered: true });
@@ -51,7 +51,7 @@ export default class Room extends React.Component {
       // at: new Date()
       at: moment(TimeSync.serverTime(null, 1000))
     });
-    console.log('room moment', moment(TimeSync.serverTime(null, 1000)))
+    // console.log('room moment', moment(TimeSync.serverTime(null, 1000)))
   };
 
   render() {

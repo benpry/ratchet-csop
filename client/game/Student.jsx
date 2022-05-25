@@ -4,13 +4,13 @@ import moment from "moment";
 
 export default class Student extends React.Component {
   handleDragStart = (e) => {
-    console.log('timeSync',moment(TimeSync.serverTime(null, 1000)))
+    // console.log('timeSync',moment(TimeSync.serverTime(null, 1000)))
     const { student, stage, player } = this.props;
     const dragger = stage.get(`student-${student}-dragger`); //check if there is already a dragger
     //if so, you can't move it, already someone is moving it!
     if (dragger) {
       // Can't drag
-      console.log("dragger");
+      // console.log("dragger");
       e.preventDefault();
       return;
     }
@@ -24,7 +24,7 @@ export default class Student extends React.Component {
       
     });
     e.dataTransfer.setData("text/plain", student);
-    console.log('student moment', moment(TimeSync.serverTime(null, 1000)))
+    // console.log('student moment', moment(TimeSync.serverTime(null, 1000)))
   };
 
   handleDragOver = (e) => {
@@ -33,7 +33,7 @@ export default class Student extends React.Component {
 
   handleDragLeave = (e) => {
     e.preventDefault();
-    console.log("released!");
+    // console.log("released!");
     const { student, stage } = this.props;
     stage.set(`student-${student}-dragger`, null);
   };

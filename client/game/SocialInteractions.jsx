@@ -34,9 +34,9 @@ export default class SocialInteractions extends React.Component {
     const { game, stage, player } = this.props;
 
     const otherPlayers = _.reject(game.players, p => p._id === player._id);
-    console.log("otherPlayers", otherPlayers);
-    console.log("chat", stage.get("chat"));
-    console.log("log", stage.get("log"));
+    // console.log("otherPlayers", otherPlayers);
+    // console.log("chat", stage.get("chat"));
+    // console.log("log", stage.get("log"));
     const messages = stage.get("chat").map(({ text, playerId }) => ({
       text,
       subject: game.players.find(p => p._id === playerId)

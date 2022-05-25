@@ -9,7 +9,7 @@ export default class UIOverview extends React.Component {
         ? "experiment/groupUIExample.svg"
         : "experiment/indUIExample.svg";
 
-    console.log("imagePath", imagePath);
+    // console.log("imagePath", imagePath);
 
     return (
       <Centered>
